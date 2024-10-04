@@ -13,9 +13,16 @@ func FunctionExample() {
 	}
 	fmt.Printf("sum result: %d\n", result)
 
+	fmt.Printf("sum of numbers: %d\n", sumNumbers(7, 7, 7, 7, 7, 7, 7))
+
+	numbersToSum := []int{7, 7, 7}
+	fmt.Printf("sum of numbers from slice: %d\n", sumNumbers(numbersToSum...))
+
 	/*
 		the sum is greater than 50
 		sum result: 0
+		sum of numbers: 49
+		sum of numbers from slice: 21
 	*/
 }
 
@@ -26,4 +33,14 @@ func sum(a, b int) (int, error) {
 	}
 
 	return sum, nil
+}
+
+// variadic function
+func sumNumbers(numbers ...int) int {
+	total := 0
+	for _, number := range numbers {
+		total += number
+	}
+
+	return total
 }
