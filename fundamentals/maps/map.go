@@ -45,3 +45,16 @@ func MapExample() {
 		does 'e' exist?: true
 	*/
 }
+
+func GroupByLength() {
+	fmt.Println("> GroupByLength")
+	words := []string{"car", "house", "table", "apple", "banana", "green", "yellow"}
+	mapByLength := make(map[int][]string)
+
+	for _, word := range words {
+		mapByLength[len(word)] = append(mapByLength[len(word)], word)
+	}
+
+	fmt.Println(mapByLength)
+	// map[3:[car] 5:[house table apple green] 6:[banana yellow]]
+}

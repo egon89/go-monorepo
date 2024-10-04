@@ -27,6 +27,7 @@ func main() {
 	arrays.ArrayExample()
 	slices.SliceExample()
 	maps.MapExample()
+	maps.GroupByLength()
 	functions.FunctionExample()
 }
 
