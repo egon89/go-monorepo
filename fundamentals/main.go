@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"fundamentals/functions"
+)
 
 const fund = "> Fundamentals"
 
@@ -21,6 +24,7 @@ func main() {
 	arrayExample()
 	sliceExample()
 	mapExample()
+	functions.FunctionExample()
 }
 
 func printGlobalVariables() {
