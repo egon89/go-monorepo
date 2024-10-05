@@ -7,6 +7,7 @@ import (
 	"fundamentals/functions"
 	"fundamentals/maps"
 	"fundamentals/slices"
+	"fundamentals/structs"
 )
 
 const fund = "> Fundamentals"
@@ -31,6 +32,7 @@ func main() {
 	maps.GroupByLength()
 	functions.FunctionExample()
 	closures.ClosureExample()
+	structs.StructsExample()
 }
 
 func printGlobalVariables() {
