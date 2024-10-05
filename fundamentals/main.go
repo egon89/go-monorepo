@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"fundamentals/arrays"
+	"fundamentals/closures"
 	"fundamentals/functions"
 	"fundamentals/maps"
 	"fundamentals/slices"
@@ -29,6 +30,7 @@ func main() {
 	maps.MapExample()
 	maps.GroupByLength()
 	functions.FunctionExample()
+	closures.ClosureExample()
 }
 
 func printGlobalVariables() {
