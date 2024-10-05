@@ -5,6 +5,7 @@ import (
 	"fundamentals/arrays"
 	"fundamentals/closures"
 	"fundamentals/functions"
+	"fundamentals/interfaces"
 	"fundamentals/maps"
 	"fundamentals/slices"
 	"fundamentals/structs"
@@ -33,6 +34,7 @@ func main() {
 	functions.FunctionExample()
 	closures.ClosureExample()
 	structs.StructsExample()
+	interfaces.InterfaceExample()
 }
 
 func printGlobalVariables() {
