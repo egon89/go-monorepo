@@ -29,3 +29,7 @@ Use `uint8`, `uint16`, `uint32` and `uint64` for positive numbers
 
 ### & (Ampersand):
 - It is used to get the memory address of a variable. For example, `&num` gives the memory address of the variable `num`.
+
+## Comparable interface
+- `comparable` is an interface that is implemented by all comparable types (booleans, numbers, strings, pointers, channels, arrays of comparable types, structs whose fields are all comparable types).
+
