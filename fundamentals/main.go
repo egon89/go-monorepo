@@ -39,6 +39,7 @@ func main() {
 	interfaces.InterfaceExample()
 	pointers.PointerExample()
 	generics.GenericsExample()
+	deferExample()
 }
 
 func printGlobalVariables() {
@@ -53,5 +54,18 @@ func printGlobalVariables() {
 	  d type is string and value
 	  e type is float64 and value 1.2
 	  f type is main.ID and value 1
+	*/
+}
+
+func deferExample() {
+	fmt.Println("> deferExample")
+	defer fmt.Println("line 1")
+	defer fmt.Println("line 2")
+	fmt.Println("line 3")
+
+	/*
+		line 3
+		line 2
+		line 1
 	*/
 }
