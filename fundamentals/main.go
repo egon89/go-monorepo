@@ -42,6 +42,9 @@ func main() {
 	generics.GenericsExample()
 	deferExample()
 	conditionals.IfWithShortStatementToExecuteBefore()
+	conditionals.SwitchExample()
+	conditionals.SwitchEvaluationOrder()
+	conditionals.SwitchWithNoCondition()
 }
 
 func printGlobalVariables() {
