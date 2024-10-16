@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"fundamentals/arrays"
 	"fundamentals/closures"
+	"fundamentals/conditionals"
 	"fundamentals/functions"
 	"fundamentals/generics"
 	"fundamentals/interfaces"
@@ -40,6 +41,7 @@ func main() {
 	pointers.PointerExample()
 	generics.GenericsExample()
 	deferExample()
+	conditionals.IfWithShortStatementToExecuteBefore()
 }
 
 func printGlobalVariables() {
