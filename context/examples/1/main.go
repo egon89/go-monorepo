@@ -16,9 +16,12 @@ import (
 func main() {
 	timeoutExample()
 	timeoutWithStringExample()
+	passInformationAcrossSystemWithContext()
+	passInformationAcrossSystemWithContextUsingStruct()
 }
 
 func timeoutExample() {
+	fmt.Println("> timeoutExample")
 	ctx, cancel := context.WithTimeout(context.Background(), 400*time.Millisecond)
 	defer cancel()
 
@@ -42,6 +45,7 @@ func timeoutExample() {
 }
 
 func timeoutWithStringExample() {
+	fmt.Println("> timeoutWithStringExample")
 	ctx, cancel := context.WithTimeout(context.Background(), 800*time.Millisecond)
 	defer cancel()
 
@@ -65,4 +69,42 @@ func timeoutWithStringExample() {
 	}
 
 	// value: john doe
+}
+
+// Use context values only for request-scoped data that transits
+// processes and API boundaries, not for passing optional parameters to
+// functions.
+func passInformationAcrossSystemWithContext() {
+	fmt.Println("> passInformationAcrossSystemWithContext")
+	const userId = "user-id"
+	ctx := context.WithValue(context.Background(), userId, "uuid")
+	if id, ok := ctx.Value(userId).(string); ok {
+		fmt.Printf("the value is %v\n", id)
+	} else {
+		fmt.Println("no value in context")
+	}
+
+	// the value is uuid
+}
+
+type RequestContext struct {
+	UserId  string
+	TraceId string
+}
+
+func passInformationAcrossSystemWithContextUsingStruct() {
+	fmt.Println("> passInformationAcrossSystemWithContextUsingStruct")
+	const key = "request-info"
+	requestContext := RequestContext{
+		UserId:  "uuid1",
+		TraceId: "uuid2",
+	}
+	ctx := context.WithValue(context.Background(), key, requestContext)
+	if id, ok := ctx.Value(key).(RequestContext); ok {
+		fmt.Printf("the value is %v\n", id)
+	} else {
+		fmt.Println("no value in context")
+	}
+
+	// the value is {uuid1 uuid2}
 }
