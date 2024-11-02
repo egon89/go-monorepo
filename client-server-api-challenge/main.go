@@ -1,6 +1,8 @@
 package main
 
 import (
+	"context"
+	"database/sql"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -8,7 +10,13 @@ import (
 	"net/http"
 	"strconv"
 	"time"
+
+	_ "github.com/mattn/go-sqlite3"
 )
+
+type App struct {
+	DB *sql.DB
+}
 
 type ExchangeSymbol string
 
@@ -45,12 +53,20 @@ type ExchangeAwesomeResponse map[string]ExchangeCodeAwesomeResponse
 
 func main() {
 	fmt.Println("> client-server-api-challenge")
+	db, err := sql.Open("sqlite3", "")
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("> database connected")
+	app := &App{DB: db}
 	fmt.Println("Server is listening on port 8080...")
-	http.HandleFunc("/", GetExchangePrice)
+	http.HandleFunc("/", app.GetExchangePriceHandler)
 	http.ListenAndServe(":8080", nil)
 }
 
-func GetExchangePrice(w http.ResponseWriter, r *http.Request) {
+func (app *App) GetExchangePriceHandler(w http.ResponseWriter, r *http.Request) {
+	ctx, cancel := context.WithTimeout(r.Context(), 500*time.Millisecond)
+	defer cancel()
 	exchangeCodeResponse, err := GetAwesomeExchange(USDBRL)
 	if err != nil {
 		log.Fatalf("exchange integration failed: %v", err)
@@ -58,6 +74,10 @@ func GetExchangePrice(w http.ResponseWriter, r *http.Request) {
 	exchange, err := exchangeCodeResponse.mapToExchange()
 	if err != nil {
 		log.Fatalf("map to exchange failed: %v", err)
+	}
+	err = app.insertExchange(ctx, &exchange)
+	if err != nil {
+		log.Fatalf("error to persist exchange: %v %v", exchange.Code, err)
 	}
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
@@ -132,4 +152,15 @@ func awesomePathMap(symbol ExchangeSymbol) string {
 	}
 
 	return path
+}
+
+func (app *App) insertExchange(ctx context.Context, exchange *Exchange) error {
+	query := `
+    INSERT INTO exchange (code, bid, high, low, var_bid, pct_change, ask, timestamp, create_date)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);`
+
+	_, err := app.DB.ExecContext(ctx, query,
+		exchange.Code, exchange.Bid, exchange.High, exchange.Low, exchange.VarBid,
+		exchange.PctChange, exchange.Ask, exchange.Timestamp, exchange.CreateDate)
+	return err
 }
