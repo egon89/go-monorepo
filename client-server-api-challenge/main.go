@@ -8,9 +8,11 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"os"
 	"strconv"
 	"time"
 
+	"github.com/joho/godotenv"
 	_ "github.com/mattn/go-sqlite3"
 )
 
@@ -52,14 +54,19 @@ type ExchangeCodeAwesomeResponse struct {
 type ExchangeAwesomeResponse map[string]ExchangeCodeAwesomeResponse
 
 func main() {
-	fmt.Println("> client-server-api-challenge")
-	db, err := sql.Open("sqlite3", "")
+	log.Println("starting client-server-api-challenge")
+	err := godotenv.Load("../.env")
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println("> database connected")
+	dbPath := os.Getenv("DB_PATH")
+	db, err := sql.Open("sqlite3", dbPath)
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("database %v connected", dbPath)
 	app := &App{DB: db}
-	fmt.Println("Server is listening on port 8080...")
+	log.Println("server is listening on port 8080...")
 	http.HandleFunc("/", app.GetExchangePriceHandler)
 	http.ListenAndServe(":8080", nil)
 }
@@ -162,5 +169,6 @@ func (app *App) insertExchange(ctx context.Context, exchange *Exchange) error {
 	_, err := app.DB.ExecContext(ctx, query,
 		exchange.Code, exchange.Bid, exchange.High, exchange.Low, exchange.VarBid,
 		exchange.PctChange, exchange.Ask, exchange.Timestamp, exchange.CreateDate)
+
 	return err
 }
