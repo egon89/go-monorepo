@@ -72,10 +72,13 @@ func main() {
 }
 
 func (app *App) GetExchangePriceHandler(w http.ResponseWriter, r *http.Request) {
-	ctx, cancel := context.WithTimeout(r.Context(), 500*time.Millisecond)
+	startTime := time.Now()
+	// create a new context with a 200ms timeout for this specific request
+	ctx, cancel := context.WithTimeout(context.Background(), 200*time.Millisecond)
 	defer cancel()
 	exchangeCodeResponse, err := GetAwesomeExchange(USDBRL)
 	if err != nil {
+		printDuration(startTime)
 		log.Fatalf("exchange integration failed: %v", err)
 	}
 	exchange, err := exchangeCodeResponse.mapToExchange()
@@ -84,11 +87,19 @@ func (app *App) GetExchangePriceHandler(w http.ResponseWriter, r *http.Request) 
 	}
 	err = app.insertExchange(ctx, &exchange)
 	if err != nil {
+		printDuration(startTime)
 		log.Fatalf("error to persist exchange: %v %v", exchange.Code, err)
 	}
+
+	if ctx.Err() != nil {
+		printDuration(startTime)
+		log.Fatalf("handle context error: %v", ctx.Err())
+	}
+
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(exchange)
+	printDuration(startTime)
 }
 
 func GetAwesomeExchange(symbol ExchangeSymbol) (*ExchangeCodeAwesomeResponse, error) {
@@ -162,6 +173,10 @@ func awesomePathMap(symbol ExchangeSymbol) string {
 }
 
 func (app *App) insertExchange(ctx context.Context, exchange *Exchange) error {
+	startTime := time.Now()
+	dbCtx, cancel := context.WithTimeout(ctx, 10*time.Millisecond)
+	defer cancel()
+
 	query := `
     INSERT INTO exchange (code, bid, high, low, var_bid, pct_change, ask, timestamp, create_date)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);`
@@ -170,5 +185,36 @@ func (app *App) insertExchange(ctx context.Context, exchange *Exchange) error {
 		exchange.Code, exchange.Bid, exchange.High, exchange.Low, exchange.VarBid,
 		exchange.PctChange, exchange.Ask, exchange.Timestamp, exchange.CreateDate)
 
+	if dbCtx.Err() != nil {
+		printDuration(startTime)
+		return dbCtx.Err()
+	}
+	printDuration(startTime)
+
 	return err
 }
+
+func printDuration(startTime time.Time) {
+	totalDuration := time.Since(startTime)
+	log.Printf("time duration: %v", totalDuration)
+}
+
+/*
+time duration: 9.269062ms
+time duration: 169.610957ms
+url: https://economia.awesomeapi.com.br/json/last/USD-BRL
+time duration: 9.055095ms
+time duration: 79.062384ms
+url: https://economia.awesomeapi.com.br/json/last/USD-BRL
+time duration: 7.014541ms
+time duration: 58.845014ms
+url: https://economia.awesomeapi.com.br/json/last/USD-BRL
+time duration: 7.722056ms
+time duration: 58.798996ms
+url: https://economia.awesomeapi.com.br/json/last/USD-BRL
+time duration: 8.346762ms
+time duration: 56.797363ms
+url: https://economia.awesomeapi.com.br/json/last/USD-BRL
+time duration: 8.58348ms
+time duration: 76.275532ms
+*/
