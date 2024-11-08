@@ -28,15 +28,15 @@ const (
 )
 
 type Exchange struct {
-	Code       string
-	Bid        float64
-	High       float64
-	Low        float64
-	VarBid     float64
-	PctChange  float64
-	Ask        float64
-	Timestamp  int64
-	CreateDate time.Time
+	Code       string    `json:"code"`
+	Bid        float64   `json:"bid"`
+	High       float64   `json:"high"`
+	Low        float64   `json:"low"`
+	VarBid     float64   `json:"varBid"`
+	PctChange  float64   `json:"pctChange"`
+	Ask        float64   `json:"ask"`
+	Timestamp  int64     `json:"timestamp"`
+	CreateDate time.Time `json:"createDate"`
 }
 
 type ExchangeCodeAwesomeResponse struct {
@@ -74,7 +74,7 @@ func main() {
 func (app *App) GetExchangePriceHandler(w http.ResponseWriter, r *http.Request) {
 	startTime := time.Now()
 	// create a new context with a 200ms timeout for this specific request
-	ctx, cancel := context.WithTimeout(context.Background(), 200*time.Millisecond)
+	ctx, cancel := context.WithTimeout(r.Context(), 2000*time.Millisecond)
 	defer cancel()
 	exchangeCodeResponse, err := GetAwesomeExchange(USDBRL)
 	if err != nil {
