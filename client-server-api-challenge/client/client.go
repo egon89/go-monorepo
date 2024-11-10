@@ -3,9 +3,11 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"io"
 	"log"
 	"net/http"
+	"os"
 	"time"
 )
 
@@ -16,7 +18,7 @@ type Exchange struct {
 func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), 300*time.Millisecond)
 	defer cancel()
-	req, err := http.NewRequestWithContext(ctx, "GET", "http://localhost:8080", nil)
+	req, err := http.NewRequestWithContext(ctx, "GET", "http://localhost:8080/cotacao", nil)
 	if err != nil {
 		panic(err)
 	}
@@ -37,5 +39,26 @@ func main() {
 		log.Fatal(err)
 	}
 
+	err = createFile(&exc)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	log.Printf("Exchange: %v\n", exc.Bid)
+}
+
+func createFile(exchange *Exchange) error {
+	f, err := os.Create("/tmp/cotacao.txt")
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+	content := fmt.Sprintf("Dólar: %v", exchange.Bid)
+	size, err := f.Write([]byte(content))
+	if err != nil {
+		return err
+	}
+	log.Printf("file created! Size: %d\n", size)
+
+	return nil
 }

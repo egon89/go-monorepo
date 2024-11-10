@@ -67,14 +67,14 @@ func main() {
 	log.Printf("database %v connected", dbPath)
 	app := &App{DB: db}
 	log.Println("server is listening on port 8080...")
-	http.HandleFunc("/", app.GetExchangePriceHandler)
+	http.HandleFunc("/cotacao", app.GetExchangePriceHandler)
 	http.ListenAndServe(":8080", nil)
 }
 
 func (app *App) GetExchangePriceHandler(w http.ResponseWriter, r *http.Request) {
 	startTime := time.Now()
 	// create a new context with a 200ms timeout for this specific request
-	ctx, cancel := context.WithTimeout(r.Context(), 2000*time.Millisecond)
+	ctx, cancel := context.WithTimeout(r.Context(), 200*time.Millisecond)
 	defer cancel()
 	exchangeCodeResponse, err := GetAwesomeExchange(USDBRL)
 	if err != nil {
