@@ -3,8 +3,10 @@ module github.com/egon89/go-monorepo/user-product-api
 go 1.23.3
 
 require (
+	github.com/go-chi/chi/v5 v5.2.0
 	github.com/google/uuid v1.4.0
 	github.com/spf13/viper v1.19.0
+	golang.org/x/crypto v0.21.0
 	gorm.io/driver/sqlite v1.5.6
 	gorm.io/gorm v1.25.12
 )

@@ -6,7 +6,10 @@ import (
 	"net/http"
 
 	"github.com/egon89/go-monorepo/user-product-api/configs"
+	"github.com/egon89/go-monorepo/user-product-api/infra/database"
+	"github.com/egon89/go-monorepo/user-product-api/infra/webserver/handlers"
 	"github.com/egon89/go-monorepo/user-product-api/internal/entity"
+	"github.com/go-chi/chi/v5"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
@@ -27,7 +30,13 @@ func main() {
 
 	db.AutoMigrate(&entity.User{})
 
+	userDB := database.NewUser(db)
+	userHandler := handlers.NewUserHandler(userDB)
+
+	r := chi.NewRouter()
+	r.Post("/users", userHandler.Create)
+
 	serverPort := configs.ServerPort
 	log.Printf("listening on %v", serverPort)
-	http.ListenAndServe(fmt.Sprintf(":%v", serverPort), nil)
+	http.ListenAndServe(fmt.Sprintf(":%v", serverPort), r)
 }
