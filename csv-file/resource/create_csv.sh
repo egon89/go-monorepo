@@ -1,12 +1,15 @@
 #!/bin/bash
 
+# File size (MB)
+file_size=5
+
 # Output file
 output_file="/tmp/large_users.csv"
 
-# Target size in bytes (500 MB)
-target_size=$((10 * 1024 * 1024))
+# Target size in bytes
+target_size=$(($file_size * 1024 * 1024))
 
-echo "Creating csv file"
+echo "Creating csv file of $target_size MB"
 
 # Write the header
 echo "uuid,email,name,phone" > $output_file

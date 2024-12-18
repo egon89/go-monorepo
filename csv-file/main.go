@@ -4,8 +4,12 @@ import (
 	"bufio"
 	"encoding/csv"
 	"fmt"
+	"log"
 	"os"
 	"sync"
+
+	"github.com/joho/godotenv"
+	"github.com/rabbitmq/amqp091-go"
 )
 
 type User struct {
@@ -17,9 +21,9 @@ type User struct {
 
 func main() {
 	csvPath := "/tmp/large_users.csv"
-	readAllFile("./resource/users_1k.csv", true)
-	readLineByLine("./resource/users_10k.csv", true)
-	readLineByLineGoRoutine(csvPath, false)
+	readAllFile("./resource/users_1k.csv", false)
+	readLineByLine("./resource/users_10k.csv", false)
+	readLineByLineGoRoutine(csvPath, true)
 }
 
 func readAllFile(path string, execute bool) {
@@ -123,6 +127,24 @@ func readLineByLineGoRoutine(path string, execute bool) {
 		return
 	}
 	fmt.Println("> reading line by line with go routine")
+
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatalf("error loading .env file: %v", err)
+	}
+
+	brokerUser := os.Getenv("RABBITMQ_USER")
+	brokerPassword := os.Getenv("RABBITMQ_PASS")
+	brokerHost := os.Getenv("RABBITMQ_HOST")
+	brokerPort := os.Getenv("RABBITMQ_PORT")
+
+	brokerConnection := fmt.Sprintf("amqp://%s:%s@%s:%s", brokerUser, brokerPassword, brokerHost, brokerPort)
+
+	conn, err := amqp091.Dial(brokerConnection)
+	if err != nil {
+		log.Fatalf("failed to connect to RabbitMQ: %v", err)
+	}
+	defer conn.Close()
 
 	file, err := os.Open(path)
 	if err != nil {
