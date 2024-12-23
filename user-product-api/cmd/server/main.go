@@ -28,13 +28,20 @@ func main() {
 	}
 	log.Printf("database %v connected", dbPath)
 
-	db.AutoMigrate(&entity.User{})
+	db.AutoMigrate(&entity.User{}, &entity.Product{})
+
+	productDB := database.NewProduct(db)
+	productHandler := handlers.NewProductHandler(productDB)
 
 	userDB := database.NewUser(db)
 	userHandler := handlers.NewUserHandler(userDB)
 
 	r := chi.NewRouter()
 	r.Post("/users", userHandler.Create)
+
+	r.Route("/products", func(r chi.Router) {
+		r.Post("/", productHandler.CreateProduct)
+	})
 
 	serverPort := configs.ServerPort
 	log.Printf("listening on %v", serverPort)

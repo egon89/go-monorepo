@@ -1,4 +1,4 @@
-###
+### create user
 
 POST http://localhost:8000/users HTTP/1.1
 content-type: application/json
@@ -9,3 +9,12 @@ content-type: application/json
     "password": "doe"
 }
 
+
+### Create product
+POST http://localhost:8000/products HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Product 1",
+    "price": 1.99
+}
