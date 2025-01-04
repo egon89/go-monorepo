@@ -3,6 +3,7 @@ package registeruser
 import (
 	"context"
 	"golang-fiber-keycloak/shared/utils"
+	"log"
 	"strings"
 
 	"github.com/Nerzal/gocloak/v13"
@@ -30,6 +31,8 @@ func (uc *registerUserUseCase) Register(ctx context.Context, input RegisterUserI
 	if err != nil {
 		return nil, err
 	}
+
+	log.Printf("user %v (%v) created", *userCreated.Username, *userCreated.ID)
 
 	return &RegisterUserOutput{
 		User: userCreated,

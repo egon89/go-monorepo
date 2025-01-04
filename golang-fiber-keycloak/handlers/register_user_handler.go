@@ -9,7 +9,8 @@ import (
 )
 
 type RegisterUserUseCase interface {
-	Register(ctx context.Context, request registeruser.RegisterUserInput) (registeruser.RegisterUserOutput, error)
+	// this should follow the use case method signature
+	Register(ctx context.Context, request registeruser.RegisterUserInput) (*registeruser.RegisterUserOutput, error)
 }
 
 func RegisterUserHandler(useCase RegisterUserUseCase) fiber.Handler {

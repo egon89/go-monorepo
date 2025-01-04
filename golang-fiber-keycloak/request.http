@@ -1,0 +1,19 @@
+@hostname = localhost
+@port = 3005
+@host = {{hostname}}:{{port}}
+
+###
+GET http://{{host}} HTTP/1.1
+
+
+### create user
+POST http://{{host}}/api/v1/users HTTP/1.1
+content-type: application/json
+
+{
+    "userName": "john.doe.2",
+    "password": "secret",
+    "firstName": "John",
+    "lastName": "Doe",
+    "email": "john.doe.2@domain.com"
+}
