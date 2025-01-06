@@ -19,6 +19,6 @@ func (uc *getAllProductUseCase) GetAllProducts(ctx context.Context) *GetAllProdu
 	products := uc.dataStorage.GetAll()
 
 	return &GetAllProductOutput{
-		products: &products,
+		Products: &products,
 	}
 }

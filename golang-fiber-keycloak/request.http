@@ -27,3 +27,7 @@ content-type: application/json
     "name": "Product 1",
     "price": 9.99
 }
+
+
+### get all products
+GET http://{{host}}/api/v1/products HTTP/1.1

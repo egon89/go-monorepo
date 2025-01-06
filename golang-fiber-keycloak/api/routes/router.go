@@ -5,6 +5,7 @@ import (
 	"golang-fiber-keycloak/infrastructure/datastores"
 	"golang-fiber-keycloak/infrastructure/identity"
 	createproduct "golang-fiber-keycloak/use_case/product/create-product"
+	getallproduct "golang-fiber-keycloak/use_case/product/get-all-product"
 	registeruser "golang-fiber-keycloak/use_case/user/register-user"
 
 	"github.com/gofiber/fiber/v2"
@@ -27,6 +28,9 @@ func InitProtectedRoutes(app *fiber.App) {
 	group := app.Group("/api/v1")
 	productDataStore := datastores.NewProductDataStore()
 	createProductUseCase := createproduct.NewCreateProductUseCase(productDataStore)
+	getAllProductUseCase := getallproduct.NewGetAllProductUseCase(productDataStore)
 
 	group.Post("/products", handlers.CreateProductHandler(createProductUseCase))
+	group.Get("/products", handlers.GetAllProductHandler(getAllProductUseCase))
+
 }
