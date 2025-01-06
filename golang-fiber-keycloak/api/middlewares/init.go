@@ -8,8 +8,10 @@ import (
 func InitFiberMiddlewares(
 	app *fiber.App,
 	initPublicRoutes func(app *fiber.App),
+	initProtectedRoutes func(app *fiber.App),
 ) {
 	app.Use(logger.New())
 
 	initPublicRoutes(app)
+	initProtectedRoutes(app)
 }

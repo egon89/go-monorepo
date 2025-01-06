@@ -18,7 +18,7 @@ func main() {
 		ServerHeader: "Fiber",
 	})
 
-	middlewares.InitFiberMiddlewares(app, routes.InitPublicRoutes)
+	middlewares.InitFiberMiddlewares(app, routes.InitPublicRoutes, routes.InitProtectedRoutes)
 
 	listenIp := viper.GetString("LISTEN_IP")
 	listenPort := viper.GetString("LISTEN_PORT")

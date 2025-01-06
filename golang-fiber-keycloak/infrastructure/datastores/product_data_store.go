@@ -19,10 +19,12 @@ func NewProductDataStore() *productDataStore {
 	}
 }
 
-func (ds *productDataStore) Create(product *entities.Product) {
+func (ds *productDataStore) Create(product *entities.Product) error {
 	ds.Lock()
 	ds.products[product.Id] = *product
 	ds.Unlock()
+
+	return nil
 }
 
 func (ds *productDataStore) GetAll() []entities.Product {
