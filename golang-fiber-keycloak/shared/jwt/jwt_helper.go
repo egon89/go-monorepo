@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/gookit/goutil"
 )
 
 type JwtHelper struct {
@@ -21,6 +22,18 @@ func NewJwtHelper(claims jwt.MapClaims) *JwtHelper {
 		accountRoles: parseAccountRoles(claims),
 		scopes:       parseScopes(claims),
 	}
+}
+
+func (j *JwtHelper) GetUserId() (string, error) {
+	return j.claims.GetSubject()
+}
+
+func (j *JwtHelper) HasRole(role string) bool {
+	return goutil.Contains(j.realmRoles, role)
+}
+
+func (j *JwtHelper) TokenHasScope(scope string) bool {
+	return goutil.Contains(j.scopes, scope)
 }
 
 func parseRealRoles(claims jwt.MapClaims) []string {
