@@ -5,6 +5,8 @@ import "fmt"
 func main() {
 	singleDimensionalArrayReverseOrder()
 	multiDimensionalArray()
+	sumAllElements()
+	reverseASingleArray()
 }
 
 func singleDimensionalArrayReverseOrder() {
@@ -39,4 +41,35 @@ func multiDimensionalArray() {
 			fmt.Printf("element at [%d][%d]: %d\n", i, j, value)
 		}
 	}
+}
+
+func sumAllElements() {
+	fmt.Println("> sum all elements in an array:")
+
+	numbers := [10]int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+
+	sum := 0
+	for _, value := range numbers {
+		sum += value
+	}
+
+	fmt.Println("sum of elements:", sum)
+}
+
+func reverseASingleArray() {
+	fmt.Println("> reverse a single array:")
+
+	numbers := [10]int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+
+	for i, j := 0, len(numbers)-1; i < j; i, j = i+1, j-1 {
+		numbers[i], numbers[j] = numbers[j], numbers[i]
+		/*
+			same as:
+			iValue := numbers[i]
+			numbers[i] = numbers[j]
+			numbers[j] = iValue
+		*/
+	}
+
+	fmt.Println("reversed array:", numbers)
 }
