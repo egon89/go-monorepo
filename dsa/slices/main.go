@@ -13,6 +13,8 @@ func main() {
 	createASliceFromArray()
 	createASliceDirectly()
 	createALiteralSlice()
+	copyElements()
+	sliceASlice()
 }
 
 func createASliceFromArray() {
@@ -63,4 +65,32 @@ func createALiteralSlice() {
 	fmt.Println("Slice:", slice)         // Slice: [5 10 15 20]
 	fmt.Println("Length:", len(slice))   // Length: 4
 	fmt.Println("Capacity:", cap(slice)) // Capacity: 4
+}
+
+func copyElements() {
+	fmt.Println("> copyElements")
+
+	source := []int{10, 20, 30}
+	dest := make([]int, 2)
+
+	copy(dest, source)
+
+	fmt.Println("source:", source)    // source: [10 20 30]
+	fmt.Println("destination:", dest) // destination: [10 20]
+}
+
+func sliceASlice() {
+	fmt.Println("> sliceASlice")
+
+	slice := []int{1, 2, 3, 4, 5, 6}
+	partialSlice := slice[1:4]
+
+	fmt.Println("partial slice:", partialSlice) // [2 3 4]
+
+	partialSliceAfter := slice[2:]
+	fmt.Println("partial slice after:", partialSliceAfter) // [3 4 5 6]
+
+	partialSliceBefore := slice[:5]
+	fmt.Println("partial slice after:", partialSliceBefore) // [1 2 3 4 5]
+
 }
