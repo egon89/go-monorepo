@@ -14,6 +14,16 @@ func main() {
 	} else {
 		fmt.Printf("Target %d not found in the array\n", target)
 	}
+
+	recursiveTarget := 15
+
+	recursiveResult := RecursiveBinarySearch(arr, recursiveTarget, 0, len(arr)-1)
+
+	if recursiveResult != -1 {
+		fmt.Printf("Target %d found at index %d\n", recursiveTarget, recursiveResult)
+	} else {
+		fmt.Printf("Target %d not found in the array\n", recursiveTarget)
+	}
 }
 
 func BinarySearch(arr []int, target int) int {
@@ -34,4 +44,20 @@ func BinarySearch(arr []int, target int) int {
 	}
 
 	return -1
+}
+
+func RecursiveBinarySearch(arr []int, target, left, right int) int {
+	if left > right {
+		return -1
+	}
+
+	mid := left + (right-left)/2
+
+	if arr[mid] == target {
+		return mid
+	} else if target < arr[mid] {
+		return RecursiveBinarySearch(arr, target, left, mid-1)
+	} else {
+		return RecursiveBinarySearch(arr, target, mid+1, right)
+	}
 }
