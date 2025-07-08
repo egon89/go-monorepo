@@ -1,4 +1,4 @@
-package main
+package helloword
 
 import "fmt"
 
@@ -11,10 +11,6 @@ const (
 	frenchHello  = "Bonjour"
 	defaultValue = ":)"
 )
-
-func main() {
-	fmt.Println(Hello("John Doe"))
-}
 
 func Hello(name string) string {
 	if name == "" {
