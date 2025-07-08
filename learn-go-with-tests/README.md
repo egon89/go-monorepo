@@ -8,4 +8,24 @@ go test -v ./...
 
 # run tests in a specific package
 go test ./hello-world
+
+# run benchmarks
+go test -bench=.
+
+# run from the root
+go test ./... -bench=.
+
+# run benchmarks with memory allocation stats
+go test ./... -bench=. -benchmem
 ```
+
+## Iterate benchmark test
+`Strings` in Go are immutable, meaning every concatenation, such as in our Repeat function, involves copying memory to accommodate the new string. This impacts performance, particularly during heavy string concatenation.
+
+The standard library provides the `strings.Builder` type which minimizes memory copying.
+
+![Benchmark Test Image](resources/iteration-benchmark.png)
+
+The `-benchmem` flag reports information about memory allocations:
+- B/op: the number of bytes allocated per iteration
+- allocs/op: the number of memory allocations per iteration
