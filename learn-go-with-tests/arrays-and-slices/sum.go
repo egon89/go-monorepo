@@ -9,3 +9,15 @@ func Sum(numbers []int) int {
 
 	return sum
 }
+
+// variadic function: accepts a variable number of arguments
+func SumAll(numbersToSum ...[]int) []int {
+	lengthOfNumbers := len(numbersToSum)
+	sums := make([]int, lengthOfNumbers)
+
+	for i, numbers := range numbersToSum {
+		sums[i] = Sum(numbers)
+	}
+
+	return sums
+}
