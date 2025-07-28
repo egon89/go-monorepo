@@ -1,7 +1,7 @@
 package main
 
-// arrays have fixed size, so this function will accept only [5]int
-func Sum(numbers [5]int) int {
+// slice
+func Sum(numbers []int) int {
 	sum := 0
 	for _, number := range numbers {
 		sum += number
@@ -9,15 +9,3 @@ func Sum(numbers [5]int) int {
 
 	return sum
 }
-
-// for version
-/*
-func Sum(numbers [5]int) int {
-	sum := 0
-	for i := 0; i < len(numbers); i++ {
-		sum += numbers[i]
-	}
-
-	return sum
-}
-*/

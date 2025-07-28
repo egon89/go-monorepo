@@ -29,3 +29,10 @@ The standard library provides the `strings.Builder` type which minimizes memory 
 The `-benchmem` flag reports information about memory allocations:
 - B/op: the number of bytes allocated per iteration
 - allocs/op: the number of memory allocations per iteration
+
+## Go Coverage tool
+The Go toolchain includes a built-in [coverage tool](https://go.dev/blog/cover) that helps you identify which parts of your code are tested by your tests. To use it, you can run:
+
+```bash
+go test -cover ./...
+```
