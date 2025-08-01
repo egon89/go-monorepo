@@ -81,3 +81,21 @@ len=6, cap=10, slice=[10 20 30 40 50 60]
 - **Capacity** is how much memory Go has already reserved for you.
 - **make([]T, length, capacity)** gives you control over both, useful for performance (e.g., avoiding many reallocations).
 
+
+## Slices can be sliced
+- Slices in Go can be sliced to create new slices from existing ones. This is done using the `slice[start:end]` syntax, where `start` is inclusive and `end` is exclusive.
+
+```go
+s := []int{1, 2, 3, 4, 5}
+sliced := s[1:3] // Creates a new slice with elements 2 and 3
+```
+
+```go
+s := []int{1, 2, 3, 4, 5}
+sliced := s[1:] // Creates a new slice with elements 2, 3, 4, and 5
+```
+
+```go
+s := []int{1, 2, 3, 4, 5}
+sliced := s[:3] // Creates a new slice with elements 1, 2, and 3
+```

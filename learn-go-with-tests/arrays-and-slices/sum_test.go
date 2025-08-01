@@ -27,3 +27,12 @@ func TestSumAll(t *testing.T) {
 		t.Errorf("result %v, expected %v", result, expected)
 	}
 }
+
+func TestSumAllTails(t *testing.T) {
+	result := SumAllTails([]int{1, 2}, []int{0, 9}, []int{3}, []int{})
+	expected := []int{2, 9, 0, 0}
+
+	if !slices.Equal(result, expected) {
+		t.Errorf("result %v, expected %v", result, expected)
+	}
+}
