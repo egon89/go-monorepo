@@ -2,22 +2,28 @@ package main
 
 import "testing"
 
-func TestPerimeter(t *testing.T) {
-	input := Rectangle{10.0, 10.0}
-	result := Perimeter(input)
-	expected := 40.0
-
-	if result != expected {
-		t.Errorf("result %.2f expected %.2f", result, expected)
-	}
-}
-
 func TestArea(t *testing.T) {
-	input := Rectangle{12.0, 6.0}
-	result := Area(input)
-	expected := 72.0
 
-	if result != expected {
-		t.Errorf("result %.2f expected %.2f", result, expected)
-	}
+	t.Run("rectangles", func(t *testing.T) {
+		rectangle := Rectangle{12, 6}
+		got := rectangle.Area()
+		want := 72.0
+
+		if got != want {
+			// %g will print a more precise decimal number
+			// %f would show 7.068583 whereas %g would show 7.0685834705770345
+			t.Errorf("got %g want %g", got, want)
+		}
+	})
+
+	t.Run("circles", func(t *testing.T) {
+		circle := Circle{10}
+		got := circle.Area()
+		want := 314.1592653589793
+
+		if got != want {
+			t.Errorf("got %g want %g", got, want)
+		}
+	})
+
 }
