@@ -17,6 +17,9 @@ go test ./... -bench=.
 
 # run benchmarks with memory allocation stats
 go test ./... -bench=. -benchmem
+
+# run specific test
+go test -run TestAreaTableDrivenTests/Rectangle
 ```
 
 ## Iterate benchmark test
