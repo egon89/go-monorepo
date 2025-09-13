@@ -39,3 +39,6 @@ The Go toolchain includes a built-in [coverage tool](https://go.dev/blog/cover) 
 ```bash
 go test -cover ./...
 ```
+
+## var keyword
+The var keyword allows us to define values global to the package.

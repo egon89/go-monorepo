@@ -11,6 +11,9 @@ type Wallet struct {
 	balance Bitcoin // private outside the package it's defined in
 }
 
+// errors are values
+var ErrInsufficientFunds = errors.New("cannot withdraw, insufficient funds")
+
 // so rather than taking a copy of the whole Wallet,
 // we instead take a pointer to that wallet so that we can change the original values within it.
 func (w *Wallet) Deposit(amount Bitcoin) {
@@ -20,7 +23,7 @@ func (w *Wallet) Deposit(amount Bitcoin) {
 
 func (w *Wallet) Withdraw(amount Bitcoin) error {
 	if amount > w.balance {
-		return errors.New("oh no")
+		return ErrInsufficientFunds
 	}
 
 	w.balance -= amount
