@@ -35,3 +35,8 @@ address of balance in test is 0xc0000121a8 and wallet 0xc0000121a8
     wallet_test.go:20: got 0 want 10
 --- FAIL: TestWallet (0.00s)
 ```
+
+## nil
+- `nil` is synonymous with `null` from other programming languages.
+- Errors can be nil because the return type will be `error`, which is an *interface*.
+  - a function that takes arguments or returns values that are *interfaces*, they can be nillable.
