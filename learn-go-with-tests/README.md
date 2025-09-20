@@ -42,3 +42,6 @@ go test -cover ./...
 
 ## var keyword
 The var keyword allows us to define values global to the package.
+
+## Maps
+The **key** type must be **comparable**, meaning we can use `==` and `!=` operators with it ([Comparison operators](https://go.dev/ref/spec#Comparison_operators)). The value type can be any type, including another map or a slice.
