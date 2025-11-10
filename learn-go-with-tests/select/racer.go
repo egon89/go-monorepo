@@ -1,9 +1,12 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"time"
 )
+
+var tenSecondTimeout = 10 * time.Second
 
 // named return value
 // if you don't assign anything to winner, it will return the zero value for a string, which is ""
@@ -33,12 +36,19 @@ func measureResponseTime(url string) time.Duration {
 // V2
 // select allows to wait on multiple channels
 // the first one to send a value wins and the code underneath the case is executed
-func RacerV2(a, b string) (winner string) {
+// time.After prevents your system blocking forever
+func RacerV2(a, b string) (winner string, error error) {
+	return ConfigurableRacer(a, b, tenSecondTimeout)
+}
+
+func ConfigurableRacer(a, b string, timeout time.Duration) (winner string, error error) {
 	select {
 	case <-ping(a):
-		return a
+		return a, nil
 	case <-ping(b):
-		return b
+		return b, nil
+	case <-time.After(timeout):
+		return "", fmt.Errorf("time out waiting for %s and %s", a, b)
 	}
 }
 
